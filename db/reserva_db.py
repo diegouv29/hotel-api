@@ -1,19 +1,18 @@
-from datetime import datetime
-from pydantic import BaseModel
+from sqlalchemy import Column, ForeignKey
+from sqlalchemy import Integer, String, DateTime
+import datetime
+from db.db_connection import Base, engine
 
-class ReservaInDB(BaseModel):
-    id_reserva: int = 0
-    clientId: int
-    check_in: str
-    check_out: str
-    dias: int
-    valor: int
+class ReservaInDB(Base):
+    __tablename__ = "reservas"
 
-database_reservas = []
-generator = {"id":0}
+    id_reserva = Column(Integer, primary_key=True, autoincrement=True)
+    clientId = Column(Integer, ForeignKey("clients.clientId"))
+    check_in = Column(String)
+    check_out = Column(String)
+    habit = Column(Integer)
+    dias = Column(Integer)
+    valor = Column(Integer)
 
-def save_reserva(reserva_in_db: ReservaInDB):
-    generator["id"] = generator["id"] + 1
-    reserva_in_db.id_reserva = generator["id"]
-    database_reservas.append(reserva_in_db)
-    return reserva_in_db
+Base.metadata.create_all(bind=engine)
+

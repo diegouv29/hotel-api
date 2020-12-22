@@ -8,6 +8,9 @@ class ClientOut(BaseModel):
     name: str
     cat: str
 
+    class Config:
+        orm_mode = True
+
 class NewClient(BaseModel):
     clientId: int
     name: str
